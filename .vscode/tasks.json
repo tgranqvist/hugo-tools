@@ -1,0 +1,83 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run server",
+            "type": "shell",
+            "command": "hugo",
+            "args": [
+                "server",
+                "--source", "src",
+                "--watch",
+                "--buildDrafts",
+                "--printI18nWarnings",
+                "--port", "23234"
+            ],
+            "isBackground": true,
+            "problemMatcher": [
+                {
+                    "owner": "custom",
+                    "pattern": [
+                        {
+                            "regexp": ".",
+                            "file": 1,
+                            "location": 2,
+                            "message": 3
+                        }
+                    ],
+                    "background": {
+                        "activeOnStart": true,
+                        "beginsPattern": "^Watching for changes in .+",
+                        "endsPattern": "^Press Ctrl\\+C to stop"
+                    }
+                }
+            ],
+            "presentation": {
+                "showReuseMessage": false,
+            }
+        },
+        {
+            "label": "Preview site",
+            "type": "shell",
+            "command": "start http://localhost:23234",
+            "dependsOn": [
+                "Run server"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+            }
+        },
+
+        {
+            "label": "New post",
+            "type": "shell",
+            "command": "hugo --source src new content posts/${input:postName}.md; code src/content/posts/${input:postName}.md",
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            }
+        }
+    ],
+
+    "inputs": [
+        {
+            "id": "postName",
+            "description": "Inläggets namn",
+            "type": "promptString"
+        }
+    ],
+}
